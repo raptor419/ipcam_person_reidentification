@@ -3,7 +3,7 @@ import os
 import sys
 from logging import getLogger, basicConfig, DEBUG, INFO
 
-from openvino.inference_engine import IENetwork, IECore, IEPlugin, get_version
+from openvino.inference_engine import IENetwork, IECore, get_version
 from timeit import default_timer as timer
 import numpy as np
 
@@ -51,18 +51,19 @@ class BaseDetection(object):
         logger.info(
             f"Loading {device} model to the {detection_of} plugin... version:{get_version()}"
         )
-        if device == "MYRIAD" and not is_myriad_plugin_initialized:
-            # To prevent MYRIAD Plugin from initializing failed, use IEPlugin Class which is deprecated
-            # "RuntimeError: Can not init Myriad device: NC_ERROR"
-            self.plugin = IEPlugin(device=device, plugin_dirs=None)
-            self.exec_net = self.plugin.load(network=net, num_requests=2)
-            is_myriad_plugin_initialized = True
-            myriad_plugin = self.plugin
-        elif device == "MYRIAD" and is_myriad_plugin_initialized:
-            logger.info(f"device plugin for {device} already initialized")
-            self.plugin = myriad_plugin
-            self.exec_net = self.plugin.load(network=net, num_requests=2)
-        else:
+        # if device == "MYRIAD" and not is_myriad_plugin_initialized:
+        #     # To prevent MYRIAD Plugin from initializing failed, use IEPlugin Class which is deprecated
+        #     # "RuntimeError: Can not init Myriad device: NC_ERROR"
+        #     self.plugin = IEPlugin(device=device, plugin_dirs=None)
+        #     self.exec_net = self.plugin.load(network=net, num_requests=2)
+        #     is_myriad_plugin_initialized = True
+        #     myriad_plugin = self.plugin
+        # elif device == "MYRIAD" and is_myriad_plugin_initialized:
+        #     logger.info(f"device plugin for {device} already initialized")
+        #     self.plugin = myriad_plugin
+        #     self.exec_net = self.plugin.load(network=net, num_requests=2)
+        # else:
+        if True:
             self.exec_net = self.ie.load_network(
                 network=net, device_name=device, num_requests=2
             )

@@ -28,6 +28,14 @@ class VideoCamera:
             else:
                 self.cap = cv2.VideoCapture(self.input_stream)
                 ##self.cap = cv2.VideoCapture("http://172.25.250.212:8081/")
+        elif input == "ipcam":
+            self.input_stream = 1
+            if v4l:
+                # for Picamera, added VideoCaptureAPIs(cv2.CAP_V4L)
+                self.cap = cv2.VideoCapture(self.input_stream, cv2.CAP_V4L)
+            else:
+                self.cap = cv2.VideoCapture(self.input_stream)
+                ##self.cap = cv2.VideoCapture("http://172.25.250.212:8081/")
         else:
             self.input_stream = input
             assert os.path.isfile(input), "Specified input file doesn't exist"
