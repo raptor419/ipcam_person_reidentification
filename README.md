@@ -1,59 +1,34 @@
 <!-- TOC -->
 
-- [Person Re-identification with OpenVINO](#person-re-identification-with-openvino)
+- [Person Re-identification](#person-re-identification)
     - [What's this](#whats-this)
-    - [Reference](#reference)
-        - [OpenVINO Toolkit and Flask Video streaming](#openvino-toolkit-and-flask-video-streaming)
-        - [OpenVINO Intel Model](#openvino-intel-model)
     - [Tested Environment](#tested-environment)
     - [Required Python packages](#required-python-packages)
+    - [Other Requirements](#reference)
+        - [OpenVINO Toolkit and Flask Video streaming](#openvino-toolkit-and-flask-video-streaming)
+        - [OpenVINO Intel Model](#openvino-intel-model)
     - [How to use](#how-to-use)
     - [Run app](#run-app)
 
 <!-- /TOC -->
 
-# Person Re-identification with OpenVINO
+# Person Re-identification over IP Camera Network
 
 ## What's this
 
-This is Person Identification Test App using Intel OpenVINO Person Re-Identification Model.
+This is Person Identification Test App using Person Re-Identification Models.
 
 You can do followings:
 
 * Person Detection
 * Preson Re-Identification (Tracking and Counter)
 
-**Person re-identifiction - Tracking - (YouTube Link)**
-<a href="https://youtu.be/zIkzlB-Z-vU">
-<img src="https://raw.githubusercontent.com/wiki/kodamap/person_reidentification/images/mall.gif" alt="mall" width="%" height="auto"></a>
-
-
-**Person re-identifiction - Tracking and Counter- (YouTube Link)**
-<a href="https://youtu.be/Pj6HYWWyucU">
-<img src="https://raw.githubusercontent.com/wiki/kodamap/person_reidentification/images/person_reid.gif" alt="person reid" width="%" height="auto"></a>
-
-## Reference
-
-### OpenVINO Toolkit and Flask Video streaming
-
-* [Install OpenVINO Toolkit](https://docs.openvinotoolkit.org/latest/index.html)
-* [Flask Video streaming](https://github.com/miguelgrinberg/flask-video-streaming)
-
-### OpenVINO Intel Model
-
-* [person-detection-retail-0013](https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/person-detection-retail-0013/description/person-detection-retail-0013.md)
-* [person-reidentification-retail-0031](https://github.com/openvinotoolkit/open_model_zoo/blob/2020.3/models/intel/person-reidentification-retail-0031/description/person-reidentification-retail-0031.md)
-
-
 
 ## Tested Environment
 
-- Python 3.7.6 (need 3.6+ for f-strings)
-- Windows 10 [Version 10.0.19041.388]
-- OpenVINO Toolkit 2020.1+[^1]
-
-[^1]: openvino.inference_engine version openvino_2020.1.033 or above build does not need cpu extension.
-    # https://software.intel.com/en-us/forums/intel-distribution-of-openvino-toolkit/topic/848825
+- Python 3.7.6
+- Windows 10
+- OpenVINO Toolkit Latest
 
 
 ## Required Python packages
@@ -62,11 +37,22 @@ You can do followings:
 pip install -r requirements.txt
 ```
 
+## Other Requirements
+
+### OpenVINO Toolkit
+* [Install OpenVINO Toolkit](https://docs.openvinotoolkit.org/latest/index.html)
+
+###  PRID Models (Already optimized and kept in this github)
+
+* [person-detection-retail-0013](https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/person-detection-retail-0013/description/person-detection-retail-0013.md)
+* [person-reidentification-retail-0031](https://github.com/openvinotoolkit/open_model_zoo/blob/2020.3/models/intel/person-reidentification-retail-0031/description/person-reidentification-retail-0031.md)
+
+
 ## How to use
 
 ```sh
 python app.py -h
-usage: app.py [-h] -i INPUT [-d {CPU,GPU,FPGA,MYRIAD}]
+usage: app.py [-h] -i INPUT(filename, cam for PC camera or ipcam) [-d {CPU,GPU,FPGA}]
               [-d_reid {CPU,GPU,FPGA,MYRIAD}] [--v4l] [-ax {0,1}] [-g GRID]
 
 optional arguments:
@@ -74,12 +60,12 @@ optional arguments:
   -i INPUT, --input INPUT
                         Path to video file or image. 'cam' for capturing video
                         stream from camera
-  -d {CPU,GPU,FPGA,MYRIAD}, --device {CPU,GPU,FPGA,MYRIAD}
+  -d {CPU,GPU}, --device {CPU,GPU}
                         Specify the target device for Person Detection to
-                        infer on; CPU, GPU, FPGA or MYRIAD is acceptable.
-  -d_reid {CPU,GPU,FPGA,MYRIAD}, --device_reidentification {CPU,GPU,FPGA,MYRIAD}
+                        infer on; CPU, GPU, FPGA is acceptable.
+  -d_reid {CPU,GPU}, --device_reidentification {CPU,GPU}
                         Specify the target device for person re-identificaiton
-                        to infer on; CPU, GPU, FPGA or MYRIAD is acceptable.
+                        to infer on; CPU, GPU, FPGA is acceptable.
   --v4l                 cv2.VideoCapture with cv2.CAP_V4L
   -ax {0,1}, --axis {0,1}
                         Specify the axis when counting person horizontally or
@@ -97,7 +83,7 @@ optional arguments:
 **example1.** camera streaming without person counter 
 
 ```sh
-python app.py -i cam
+python app.py -i ipcam
 ```
 
 **example2** Specify video file with person counter
